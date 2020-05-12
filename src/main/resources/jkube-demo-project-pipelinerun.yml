@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: tutorial-pipeline-run-1
+spec:
+  serviceAccountName: default
+  pipelineRef:
+    name: tutorial-pipeline
+  resources:
+    - name: source-repo
+      resourceRef:
+        name: jkube-demo-git

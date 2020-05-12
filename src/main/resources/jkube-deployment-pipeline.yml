@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: tutorial-pipeline
+spec:
+  resources:
+    - name: source-repo
+      type: git
+  tasks:
+    - name: deploy-jkube
+      taskRef:
+        name: deploy-using-eclipse-jkube
+      resources:
+        inputs:
+          - name: source
+            resource: source-repo

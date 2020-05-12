@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: deploy-using-eclipse-jkube
+spec:
+  resources:
+    inputs:
+      - name: source
+        type: git
+  steps:
+    - name: resource-apply
+      image: maven:3.6.3-jdk-11
+      command: ["/bin/bash", "-c"]
+      args: ["cd source && mvn package k8s:resource k8s:apply"]
