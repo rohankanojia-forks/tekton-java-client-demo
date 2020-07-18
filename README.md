@@ -1,5 +1,8 @@
 # Fabric8 Tekton Java Client Demo
 
+![License](https://img.shields.io/github/license/rohanKanojia/kubernetes-client-demo)
+[![Twitter](https://img.shields.io/twitter/follow/fabric8io?style=social)](https://twitter.com/fabric8io)
+
 This Project demonstrates use of Fabric8 Tekton Java Client by creating a simple Pipeline which uses
 [Eclipse JKube](https://github.com/eclipse/jkube) to deploy a simple [Random Generator](https://github.com/rohanKanojia/eclipse-jkube-demo-project) Spring Boot
 application to a minikube cluster.
