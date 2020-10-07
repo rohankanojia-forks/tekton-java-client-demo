@@ -1,0 +1,46 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: simple-pipeline
+spec:
+  params:
+    - name: message
+      description: The message to print
+      default: This is the default message
+      type: string
+    - name: contenttype
+      description: The Content-Type of the event
+      type: string
+  resources:
+    - name: git-source
+      type: git
+  tasks:
+    - name: say-hello
+      taskRef:
+        name: say-hello
+      params:
+        - name: contenttype
+          value: $(params.contenttype)
+      resources:
+        inputs:
+          - name: git-source
+            resource: git-source
+    - name: say-message
+      runAfter: [say-hello]
+      taskRef:
+        name: say-message
+      params:
+        - name: message
+          value: $(params.message)
+      resources:
+        inputs:
+          - name: git-source
+            resource: git-source
+    - name: say-bye
+      runAfter: [say-message]
+      taskRef:
+        name: say-bye
+      resources:
+        inputs:
+          - name: git-source
+            resource: git-source

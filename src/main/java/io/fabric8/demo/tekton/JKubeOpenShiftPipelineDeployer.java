@@ -47,7 +47,6 @@ public class JKubeOpenShiftPipelineDeployer {
                         .endTask()
                     .endSpec()
                     .done();
-
         }
     }
 }

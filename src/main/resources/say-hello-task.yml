@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: say-hello
+spec:
+  params:
+    - name: contenttype
+      description: The Content-Type of the event
+      type: string
+  resources:
+    inputs:
+      - name: git-source
+        type: git
+  steps:
+    - name: say-hi
+      image: bash
+      command: ["bash", "-c"]
+      args:
+        - echo -e 'Hello'
