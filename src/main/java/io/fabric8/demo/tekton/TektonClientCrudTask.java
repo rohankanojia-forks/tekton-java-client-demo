@@ -2,6 +2,7 @@ package io.fabric8.demo.tekton;
 
 import io.fabric8.tekton.client.DefaultTektonClient;
 import io.fabric8.tekton.client.TektonClient;
+import io.fabric8.tekton.pipeline.v1beta1.TaskBuilder;
 import io.fabric8.tekton.pipeline.v1beta1.Task;
 
 public class TektonClientCrudTask {
@@ -15,7 +16,7 @@ public class TektonClientCrudTask {
                     .load(TektonClientCrudTask.class.getResourceAsStream("/say-hello-task.yml")).get();
 
             // Create Task object into Kubernetes
-            tkn.v1beta1().tasks().inNamespace(NAMESPACE).createOrReplace(task);
+            tkn.v1beta1().tasks().inNamespace(NAMESPACE).resource(task).createOrReplace();
 
             // Get Task object from APIServer
             String taskName = task.getMetadata().getName();
@@ -24,11 +25,11 @@ public class TektonClientCrudTask {
                     .get();
 
             // Edit Task object, add some dummy label
-            tkn.v1beta1().tasks().inNamespace(NAMESPACE).withName(taskName).edit()
+            tkn.v1beta1().tasks().inNamespace(NAMESPACE).withName(taskName).edit(t -> new TaskBuilder(t)
                     .editOrNewMetadata()
                     .addToAnnotations("context", "demo")
                     .endMetadata()
-                    .done();
+                    .build());
 
             // Delete Task object
             tkn.v1beta1().tasks().inNamespace(NAMESPACE).withName(taskName).delete();

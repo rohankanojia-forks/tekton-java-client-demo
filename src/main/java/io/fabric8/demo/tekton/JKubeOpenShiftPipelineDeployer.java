@@ -2,6 +2,8 @@ package io.fabric8.demo.tekton;
 
 import io.fabric8.tekton.client.DefaultTektonClient;
 import io.fabric8.tekton.client.TektonClient;
+import io.fabric8.tekton.pipeline.v1beta1.PipelineBuilder;
+import io.fabric8.tekton.pipeline.v1beta1.TaskBuilder;
 
 public class JKubeOpenShiftPipelineDeployer {
     private static final String NAMESPACE = "default";
@@ -9,7 +11,7 @@ public class JKubeOpenShiftPipelineDeployer {
     public static void main(String[] args) {
         try (TektonClient tkn = new DefaultTektonClient()) {
             // Create Eclipse JKube OpenShift Task
-            tkn.v1beta1().tasks().inNamespace(NAMESPACE).createOrReplaceWithNew()
+            tkn.v1beta1().tasks().inNamespace(NAMESPACE).resource(new TaskBuilder()
                     .withNewMetadata().withName("mvn-openshift").endMetadata()
                     .withNewSpec()
                         .addNewStep()
@@ -25,10 +27,10 @@ public class JKubeOpenShiftPipelineDeployer {
                             .endInput()
                         .endResources()
                     .endSpec()
-                    .done();
+                    .build()).createOrReplace();
 
             // Create Eclipse JKube OpenShift Pipeline
-            tkn.v1beta1().pipelines().inNamespace(NAMESPACE).createOrReplaceWithNew()
+            tkn.v1beta1().pipelines().inNamespace(NAMESPACE).resource(new PipelineBuilder()
                     .withNewMetadata().withName("jkube-openshift-deploy-pipeline").endMetadata()
                     .withNewSpec()
                         .addNewResource()
@@ -46,7 +48,7 @@ public class JKubeOpenShiftPipelineDeployer {
                             .endResources()
                         .endTask()
                     .endSpec()
-                    .done();
+                    .build()).createOrReplace();
         }
     }
 }

@@ -4,6 +4,7 @@ import io.fabric8.tekton.client.DefaultTektonClient;
 import io.fabric8.tekton.client.TektonClient;
 import io.fabric8.tekton.pipeline.v1beta1.ArrayOrString;
 import io.fabric8.tekton.pipeline.v1beta1.PipelineRunBuilder;
+import io.fabric8.tekton.triggers.v1alpha1.TriggerTemplateBuilder;
 
 import java.util.Collections;
 
@@ -12,7 +13,7 @@ public class SimpleTriggerTemplate {
 
     public static void main(String[] args) {
         try (TektonClient tkn = new DefaultTektonClient()) {
-            tkn.v1alpha1().triggerTemplates().inNamespace(NAMESPACE).createOrReplaceWithNew()
+            tkn.v1alpha1().triggerTemplates().inNamespace(NAMESPACE).resource(new TriggerTemplateBuilder()
                     .withNewMetadata().withName("pipeline-template").endMetadata()
                     .withNewSpec()
                     .addNewParam()
@@ -61,7 +62,7 @@ public class SimpleTriggerTemplate {
                             .endSpec()
                             .build()))
                     .endSpec()
-                    .done();
+                    .build()).createOrReplace();
         }
     }
 }

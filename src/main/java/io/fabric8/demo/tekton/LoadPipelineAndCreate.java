@@ -12,7 +12,7 @@ public class LoadPipelineAndCreate {
                     .load(LoadPipelineAndCreate.class.getResourceAsStream("/simple-pipeline.yml"))
                     .get();
             // Apply object onto Kubernetes APIServer
-            tkn.v1beta1().pipelines().inNamespace("default").createOrReplace(pipeline);
+            tkn.v1beta1().pipelines().inNamespace("default").resource(pipeline).createOrReplace();
         }
     }
 }
